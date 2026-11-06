@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- REPLACE: page title and description -->
+  <title>Sakib Hossain – Video Editor Portfolio</title>
+  <meta name="description" content="Sakib Hossain is a video editor offering professional, AI-assisted video editing for content creators.">
+  <style>
+    :root {
+      --bg: #0b0b2a;
+      --bg-alt: #12124a;
+      --card: #1a1a5e;
+      --text: #f2f2ff;
+      --muted: #c9c9ee;
+      --accent: #9999ff;
+      --accent-2: #c7a6ff;
+      --border: #4a4a9e;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background: linear-gradient(160deg, #00005b 0%, var(--bg) 45%, #2a0f5e 100%);
+      background-attachment: fixed;
+      overflow-wrap: anywhere;
+      overflow-x: hidden;
+    }
+    a { color: var(--accent); }
+    a:focus-visible, .skip:focus-visible, .button:focus-visible, video:focus-visible {
+      outline: 3px solid #ffffff;
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+    .skip {
+      position: absolute; left: 1rem; top: -4rem;
+      background: #fff; color: #000; padding: .75rem 1rem; z-index: 10;
+    }
+    .skip:focus { top: 1rem; }
+
+    /* Keep real content above the moving logos */
+    header, main, footer { position: relative; z-index: 1; }
+
+    /* ===== LOGOS MOVING ACROSS THE PAGE ===== */
+    .floaters {
+      position: fixed; inset: 0; overflow: hidden;
+      pointer-events: none; z-index: 0;
+    }
+    .float {
+      position: absolute;
+      left: 0; top: var(--y);
+      width: var(--s); height: var(--s);
+      display: grid; place-items: center;
+      border-radius: 22%;
+      font-weight: 800; font-size: calc(var(--s) * .42);
+      letter-spacing: -.02em;
+      opacity: .35;
+      box-shadow: 0 0 30px rgba(153, 153, 255, .35);
+      /* "translate" = travel across the page, "transform" = bob and spin. They don't conflict. */
+      animation:
+        travel var(--d) linear var(--delay) infinite,
+        bob 5s ease-in-out var(--delay) infinite alternate;
+    }
+    .float.rtl { animation-direction: reverse, alternate; } /* moves right to left */
+    .float svg { width: 60%; height: 60%; }
+    .ae  { background: #00005b; color: #d291ff; border: 2px solid #d291ff; }
+    .pr  { background: #00005b; color: #9999ff; border: 2px solid #9999ff; }
+    .dr  { background: linear-gradient(135deg, #ff6b6b, #ffd166, #4cc9f0); color: #0b0b2a; border: 2px solid #ffffff; border-radius: 50%; }
+    .vid { background: linear-gradient(135deg, #4a4a9e, #9999ff); color: #ffffff; }
+    .ply { background: linear-gradient(135deg, #c7a6ff, #9999ff); color: #00005b; border-radius: 50%; }
+    .clp { background: #1a1a5e; color: #c7a6ff; border: 2px dashed #c7a6ff; }
+
+    @keyframes travel {
+      from { translate: -15vw 0; }
+      to   { translate: 115vw 0; }
+    }
+    @keyframes bob {
+      0%   { transform: translateY(-25px) rotate(-12deg); }
+      100% { transform: translateY(25px)  rotate(12deg); }
+    }
+
+    /* ===== PAGE ANIMATIONS ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes shine {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(153, 153, 255, .6); }
+      50%      { box-shadow: 0 0 0 14px rgba(153, 153, 255, 0); }
+    }
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    #introduction h1, #introduction .role, #introduction .lead, #introduction .button {
+      animation: fadeUp .8s ease both;
+    }
+    #introduction .role   { animation-delay: .15s; }
+    #introduction .lead   { animation-delay: .3s; }
+    #introduction .button { animation: fadeUp .8s ease .45s both, pulse 2.4s ease-in-out 1.5s infinite; }
+
+    @supports (animation-timeline: view()) {
+      section:not(#introduction) {
+        animation: reveal linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 35%;
+      }
+    }
+
+    header {
+      background: linear-gradient(90deg, rgba(0,0,91,.9), rgba(42,15,94,.9));
+      border-bottom: 1px solid var(--border);
+    }
+    nav {
+      max-width: 70rem; margin: 0 auto; padding: 1rem;
+      display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; align-items: center;
+    }
+    nav .brand { font-weight: 700; margin-right: auto; }
+    nav a { color: var(--text); text-decoration: none; padding: .25rem .5rem; border-bottom: 2px solid transparent; transition: border-color .2s; }
+    nav a:hover { border-bottom-color: var(--accent); }
+
+    main { max-width: 70rem; margin: 0 auto; padding: 0 1rem; }
+    section { padding: 4rem 0 2rem; }
+    h1 { font-size: clamp(2rem, 6vw, 3.5rem); line-height: 1.15; margin: 0 0 .5rem; }
+    h2 {
+      font-size: clamp(1.5rem, 4vw, 2.1rem); margin: 0 0 1.5rem;
+      padding-bottom: .5rem; border-bottom: 3px solid transparent;
+      border-image: linear-gradient(90deg, var(--accent), var(--accent-2), transparent) 1;
+    }
+    h3 { margin: 0 0 .5rem; font-size: 1.25rem; }
+    .role { font-size: 1.25rem; color: var(--muted); margin: 0 0 1rem; }
+    .gradient-text {
+      background: linear-gradient(90deg, #9999ff, #ffffff, #d9a6ff, #9999ff);
+      background-size: 200% auto;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: shine 5s linear infinite;
+    }
+    .lead { max-width: 40rem; color: var(--muted); }
+
+    .button {
+      display: inline-block; margin-top: 1rem; padding: .85rem 1.5rem;
+      background: linear-gradient(90deg, #9999ff, #c7a6ff);
+      color: #0b0b2a; font-weight: 700; text-decoration: none; border-radius: .5rem;
+      transition: transform .2s, filter .2s;
+    }
+    .button:hover { filter: brightness(1.1); transform: translateY(-2px); }
+
+    .grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+    .card {
+      background: linear-gradient(145deg, var(--card), var(--bg-alt));
+      border: 1px solid var(--border); border-radius: .75rem; padding: 1.5rem;
+      transition: transform .3s, box-shadow .3s, border-color .3s;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent);
+      box-shadow: 0 12px 30px rgba(153, 153, 255, .25);
+    }
+    .thumb {
+      display: block; width: 100%; aspect-ratio: 16 / 9;
+      background: #000; border-radius: .5rem; margin-bottom: 1rem;
+      object-fit: cover; cursor: pointer;
+    }
+    .card dl { margin: 1rem 0 0; }
+    .card dt { font-weight: 700; color: var(--accent); margin-top: .75rem; }
+    .card dd { margin: 0; }
+
+    .skills { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: .75rem; }
+    .skills li {
+      background: linear-gradient(90deg, var(--card), var(--bg-alt));
+      border: 1px solid var(--accent);
+      border-radius: 2rem; padding: .4rem 1rem;
+      transition: transform .2s, background .2s;
+    }
+    .skills li:hover { transform: translateY(-3px) scale(1.05); background: var(--card); }
+
+    .contact-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; }
+    .contact-list li {
+      background: linear-gradient(145deg, var(--card), var(--bg-alt));
+      border: 1px solid var(--border); border-radius: .5rem; padding: 1rem;
+      transition: transform .2s, border-color .2s;
+    }
+    .contact-list li:hover { transform: translateX(6px); border-color: var(--accent); }
+    .contact-list strong { display: block; color: var(--accent); }
+
+    footer { text-align: center; padding: 3rem 1rem; color: var(--muted); }
+
+    /* Turn off all motion for visitors who prefer reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *:not(.float), *:not(.float)::before, *:not(.float)::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+
+  <!-- ===== MOVING LOGOS (decorative only) =====
+       REPLACE: --y = height on screen, --s = size, --d = time to cross the page (higher = slower),
+       --delay = negative number so it starts mid-way. Add class "rtl" to move right to left. Delete any you don't want. -->
+  <div class="floaters" aria-hidden="true">
+    <div class="float ae"       style="--y:8%;  --s:64px; --d:22s; --delay:-2s">Ae</div>
+    <div class="float pr rtl"   style="--y:18%; --s:70px; --d:26s; --delay:-9s">Pr</div>
+    <div class="float dr"       style="--y:30%; --s:58px; --d:18s; --delay:-14s">Dr</div>
+    <div class="float vid rtl"  style="--y:42%; --s:62px; --d:24s; --delay:-5s">
+      <svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="6" width="13" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3z"/></svg>
+    </div>
+    <div class="float ply"      style="--y:54%; --s:54px; --d:20s; --delay:-11s">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+    <div class="float clp rtl"  style="--y:66%; --s:58px; --d:28s; --delay:-17s">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM4 4l16 0-1 3H3z"/></svg>
+    </div>
+    <div class="float pr"       style="--y:76%; --s:48px; --d:16s; --delay:-7s">Pr</div>
+    <div class="float ae rtl"   style="--y:86%; --s:52px; --d:21s; --delay:-12s">Ae</div>
+    <div class="float dr rtl"   style="--y:24%; --s:44px; --d:30s; --delay:-20s">Dr</div>
+    <div class="float ply"      style="--y:92%; --s:46px; --d:19s; --delay:-3s">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+  </div>
+
+  <header>
+    <nav aria-label="Main navigation">
+      <!-- REPLACE: your name -->
+      <span class="brand">Sakib Hossain</span>
+      <a href="#introduction">Introduction</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <!-- ===== INTRODUCTION ===== -->
+    <section id="introduction" aria-labelledby="intro-heading">
+      <!-- REPLACE: name -->
+      <h1 id="intro-heading"><span class="gradient-text">Sakib Hossain</span></h1>
+      <!-- REPLACE: job title and company -->
+      <p class="role">Video Editor at Unreal Creative Agency</p>
+      <!-- REPLACE: short pitch to content creators -->
+      <p class="lead">
+        I help content creators turn raw footage into polished, scroll-stopping videos. Professional editing, sharpened by AI-assisted workflows for faster turnaround.
+      </p>
+      <a class="button" href="#projects">View Projects</a>
+    </section>
+
+    <!-- ===== PROJECTS ===== -->
+    <section id="projects" aria-labelledby="projects-heading">
+      <h2 id="projects-heading">Projects</h2>
+      <div class="grid">
+
+        <!-- REPLACE: Project 1. Change video src, poster (thumbnail), and details -->
+        <article class="card">
+          <video class="thumb" controls preload="none"
+                 aria-label="Neon Nights travel vlog preview video"
+                 poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 360'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2300005b'/%3E%3Cstop offset='1' stop-color='%239999ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='640' height='360' fill='url(%23g)'/%3E%3Ccircle cx='320' cy='180' r='44' fill='white' fill-opacity='.9'/%3E%3Cpath d='M306 156l40 24-40 24z' fill='%2300005b'/%3E%3C/svg%3E">
+            <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <h3>Neon Nights: Travel Vlog Series</h3>
+          <p>A 10-episode travel vlog series with fast-paced storytelling, custom animated titles, music sync, and cinematic color grading.</p>
+          <dl>
+            <dt>Role</dt><dd>Lead Video Editor</dd>
+            <dt>Tools used</dt><dd>Adobe Premiere Pro, After Effects, DaVinci Resolve</dd>
+            <dt>Outcome</dt><dd>Consistent look across all episodes and a 35% faster turnaround per episode.</dd>
+            <dt>Proof</dt><dd><a href="https://example.com/neon-nights">Watch Neon Nights</a></dd>
+          </dl>
+        </article>
+
+        <!-- REPLACE: Project 2. Change video src, poster (thumbnail), and details -->
+        <article class="card">
+          <video class="thumb" controls preload="none"
+                 aria-label="ClipCraft podcast highlights preview video"
+                 poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 360'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%232a0f5e'/%3E%3Cstop offset='1' stop-color='%23c7a6ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='640' height='360' fill='url(%23g)'/%3E%3Ccircle cx='320' cy='180' r='44' fill='white' fill-opacity='.9'/%3E%3Cpath d='M306 156l40 24-40 24z' fill='%232a0f5e'/%3E%3C/svg%3E">
+            <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <h3>ClipCraft: AI-Assisted Podcast Highlights</h3>
+          <p>Short vertical clips cut from long podcast episodes using AI transcription and auto-captioning, then refined by hand for pacing and clarity.</p>
+          <dl>
+            <dt>Role</dt><dd>Editor and AI Workflow Designer</dd>
+            <dt>Tools used</dt><dd>Premiere Pro, AI transcription and captioning tools, Adobe Audition</dd>
+            <dt>Outcome</dt><dd>20 ready-to-post clips per episode with accurate captions and clean audio.</dd>
+            <dt>Proof</dt><dd><a href="https://example.com/clipcraft">View the ClipCraft reel</a></dd>
+          </dl>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ===== SKILLS ===== -->
+    <section id="skills" aria-labelledby="skills-heading">
+      <h2 id="skills-heading">Skills</h2>
+      <!-- REPLACE: edit, add, or delete <li> items -->
+      <ul class="skills">
+        <li>Video Editing</li>
+        <li>Color Grading</li>
+        <li>Motion Graphics</li>
+        <li>Sound Design and Audio Cleanup</li>
+        <li>Captions and Subtitles</li>
+        <li>Storytelling and Pacing</li>
+        <li>Short-Form Content (Reels, Shorts, TikTok)</li>
+        <li>Adobe Premiere Pro</li>
+        <li>Adobe After Effects</li>
+        <li>DaVinci Resolve</li>
+        <li>AI-Assisted Editing</li>
+      </ul>
+    </section>
+
+    <!-- ===== ABOUT ===== -->
+    <section id="about" aria-labelledby="about-heading">
+      <h2 id="about-heading">About</h2>
+      <!-- REPLACE: your bio -->
+      <p class="lead">
+        Sakib Hossain is a video editor at Unreal Creative Agency with a focus on working directly with content creators. He turns raw footage into engaging, publish-ready videos on tight schedules.
+      </p>
+      <!-- REPLACE: your professional interests -->
+      <p class="lead">
+        His interests include storytelling, short-form content, and using AI tools to speed up repetitive editing tasks without losing creative quality.
+      </p>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact" aria-labelledby="contact-heading">
+      <h2 id="contact-heading">Contact</h2>
+      <ul class="contact-list">
+        <!-- REPLACE: email (update both mailto: and visible text) -->
+        <li><strong>Email</strong><a href="mailto:sakib@example.com">sakib@example.com</a></li>
+        <!-- REPLACE: LinkedIn URL (update both href and visible text) -->
+        <li><strong>LinkedIn</strong><a href="https://www.linkedin.com/in/sakib-hossain-demo">linkedin.com/in/sakib-hossain-demo</a></li>
+        <!-- REPLACE: optional extra link, or delete this <li> -->
+        <li><strong>Portfolio reel</strong><a href="https://example.com/sakib-reel">example.com/sakib-reel</a></li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer>
+    <!-- REPLACE: footer text; delete the second line when using real content -->
+    <p>Sakib Hossain · Video Editor</p>
+    <p>Sample content for demonstration only.</p>
+  </footer>
+</body>
+</html>
